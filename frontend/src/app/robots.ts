@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const SITE_URL = 'https://onepoint-renter.vercel.app';
+const SITE_URL = 'https://opvrenter.vercel.app';
 
 export default function robots(): MetadataRoute.Robots {
   return {

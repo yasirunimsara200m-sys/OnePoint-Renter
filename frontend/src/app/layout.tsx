@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppFloatingButton from '../components/WhatsAppFloatingButton';
 
-const SITE_URL = 'https://onepoint-renter.vercel.app';
+const SITE_URL = 'https://opvrenter.vercel.app';
 const SITE_NAME = 'OnePoint Renter';
 
 export const metadata: Metadata = {
