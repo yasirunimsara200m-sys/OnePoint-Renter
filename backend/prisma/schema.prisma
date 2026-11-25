@@ -1,0 +1,131 @@
+// This is your Prisma schema file for OnePoint Renter
+// Configured for PostgreSQL database
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+}
+
+enum BikeCategory {
+  SCOOTER
+  GEAR_BIKE
+  ADVENTURE
+}
+
+enum TransmissionType {
+  AUTOMATIC
+  MANUAL
+}
+
+enum BikeStatus {
+  AVAILABLE
+  RENTED
+  MAINTENANCE
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         Role     @default(CUSTOMER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  bookings     Booking[]
+}
+
+model Bike {
+  id             String           @id @default(uuid())
+  name           String
+  brand          String
+  modelYear      Int
+  category       BikeCategory     @default(SCOOTER)
+  engineCapacity Int              // in cc, e.g. 110, 125, 150
+  transmission   TransmissionType @default(AUTOMATIC)
+  dailyRateLkr   Float
+  weeklyRateLkr  Float?
+  depositLkr     Float            @default(5000)
+  status         BikeStatus       @default(AVAILABLE)
+  location       String           @default("Colombo") // Colombo, Mirissa, Weligama, Ella, Kandy, Negombo
+  plateNumber    String           @unique
+  imageUrl       String
+  gallery        String[]         @default([])
+  mileageLimitKm Int?             // e.g. 150 km/day
+  features       String[]         @default([]) // e.g. ["Helmet included", "USB Charger", "Insurance", "Phone Holder"]
+  description    String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  bookings       Booking[]
+}
+
+model Booking {
+  id                   String                 @id @default(uuid())
+  bookingReference     String                 @unique // e.g. OPR-2026-XXXX
+  bikeId               String
+  bike                 Bike                   @relation(fields: [bikeId], references: [id])
+  userId               String?
+  user                 User?                  @relation(fields: [userId], references: [id])
+  
+  customerName         String
+  customerPhone        String                 // WhatsApp primary phone number (+94...)
+  customerEmail        String?
+  customerNicOrPassport String
+  drivingLicenseNumber String
+  
+  pickupLocation       String
+  dropoffLocation      String
+  startDate            DateTime
+  endDate              DateTime
+  totalDays            Int
+  
+  dailyRateLkr         Float
+  helmetsCount         Int                    @default(1)
+  helmetFeeLkr         Float                  @default(0)
+  totalAmountLkr       Float
+  depositLkr           Float                  @default(5000)
+  
+  status               BookingStatus          @default(PENDING)
+  whatsappNotified     Boolean                @default(false)
+  notes                String?
+  
+  documents            VerificationDocument[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+}
+
+model VerificationDocument {
+  id           String         @id @default(uuid())
+  bookingId    String
+  booking      Booking        @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  documentType String         // "NIC_FRONT", "NIC_BACK", "DRIVING_LICENSE", "PASSPORT"
+  fileUrl      String
+  status       DocumentStatus @default(PENDING)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
