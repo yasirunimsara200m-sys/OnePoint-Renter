@@ -107,8 +107,7 @@ export const metadata: Metadata = {
   category: 'travel',
 
   verification: {
-    // Add your Google Search Console verification token here when you get it
-    // google: 'YOUR_GOOGLE_VERIFICATION_TOKEN',
+    google: 'd4d9c95bf75d01e2',
   },
 };
 
