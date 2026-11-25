@@ -16,8 +16,6 @@
 
 ### 2. පරිපාලක පැනලය (Admin Panel - `/opv-admin`)
 - **ආරක්ෂිත Login පද්ධතිය**:
-  - **Email**: `admin@onepoint.lk`
-  - **Password**: `Admin@123`
 - **Dashboard Overview**: මුළු බයික් ගණන, දැනට පාරේ ධාවනය වන බයික් (Active Rentals), අනුමැතිය බලාපොරොත්තුවන Bookings (Pending) සහ මුළු ආදායම (LKR).
 - **Bookings Management**: Bookings අනුමත කිරීම, බයික් එක පාරිභෝගිකයාට ලබා දීම (Handover), බයික් එක නැවත භාරගැනීම (Returned).
 - **1-Click WhatsApp Customer Contact**: සෑම Booking එකක් සඳහාම පාරිභෝගිකයාගේ WhatsApp එකට කෙලින්ම Approved හෝ Reminder පණිවිඩ යැවීමේ පහසුකම.
